@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>图片列表</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+ 
     <script>
         /*function resizeImages() {
             var images = document.getElementsByTagName('img');
@@ -15,46 +17,75 @@
         }
 
         window.onload = resizeImages;*/
+    
+    }
+}
+    
+    
+    
+    
     </script>
 </head>
 <body>
     <div class="center-zoom">
 
-    <div class="list"> </div>
+    
     <div class="list">
 
     	<div>
 		<h1>图片上传</h1>
 	</div>
+	
+
+
 	<form method="post" action="/upload/{{name}}" enctype="multipart/form-data">
-    	    <div class="image-container">
-    	        <input type="file" name="image" class="image-input" />
-    	    </div>
-    	    <div>
-    	        <input type="submit" value="上传" />
-    	    </div>
+	    <div class="upload-img">
+    	    	<label for="imageUpload">选择图片上传:</label>
+		<div class="image-container">
+    	    	    <input type="file" value="点击上传图片" multiple="multiple"  name="image" class="image-input" id="imageUpload"/>
+    	    	</div>
+    	    	<div>
+    	    	    <input type="submit" value="选择文件后点击按钮上传" />
+    	    	</div>
+	    </div>
     	</form>
     </div>
-
+    
 
 
     <div class="list">
     <h1>图片列表</h1>
     <ul>
+	<div class="list2">
         {% for image in images %}
-            <li><img src="{{ url_for('send_image', filename=image, name=name) }}" alt="{{ image }}"></li>
+            
+		 <a href="{{ url_for('send_image', filename=image, name=name, size=4) }}">
+		    <img src="{{ url_for('send_image', filename=image, name=name, size=10) }}" alt="{{ image }}">
+		 </a>   
+	    
         {% endfor %}
+	</div>
     </ul>
+    <div>
+    {{ paginate.links }}
+    </div>
+    <h1>视频列表</h1>
     <ul>
+	<div class="list2">
         {% for video in videos %}
-	    <li> <video width="320" height="180" controls>
+	    
+		    <video width="320" height="180" controls>
   			<source src="{{ url_for('send_video', filename=video, name=name) }}" type="video/mp4" bitrate="500k">
   				Your browser does not support the video tag.
 		 </video>
-	    </li>
+	    
         {% endfor %}
+	</div>
     
     </ul>
+    <div>
+    {{ paginate_video.links }}
+    </div>
 
     </div>
 
@@ -65,16 +96,30 @@
     </div>
     <style>
         .center-zoom {
-            display: flex;
+            /*display: flex;
             justify-content: center;
             align-items: center;
 	    flex-direction: column;
-            /*height: 1px;
-            transform: scale(1.5);*/
-            text-align: center;
+            text-align: center;*/
         }
-	.list{
-		margin: 5px;
+	.list2{
+	    display: flex;
+  	    flex-wrap: wrap;
+            gap: 10px; /* 定义图片之间的间隙 */	
+	}
+	.list2 img{
+	    max-width: 100%; /* 图片宽度不超过其容器宽度 */
+  	    height: auto; /* 保持图片比例 */
+	}
+	
+	.upload-img{
+	    display: flex;
+  	    flex-wrap: wrap;
+            gap: 10px; /* 定义图片之间的间隙 */	
+	}
+	.upload-img input{
+	    max-width: 100%; /* 图片宽度不超过其容器宽度 */
+  	    height: auto; /* 保持图片比例 */
 	}
 
     </style>
